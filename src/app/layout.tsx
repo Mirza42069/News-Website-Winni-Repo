@@ -6,12 +6,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'aos/dist/aos.css';
 import type { Metadata } from "next";
 import { Oswald } from "next/font/google";
+
 import Header from '@/components/Header';
 import "./variables.css";
 import "./globals.css";
 
-const OSwald = Oswald({
-  subsets: ["latin"],
+const oswald = Oswald({
+  subsets: ["latin"]
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${OSwald.className}`}>
+      <body className={oswald.className}>
         <Header />
         {children}
       </body>

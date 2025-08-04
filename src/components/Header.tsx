@@ -31,7 +31,7 @@ export default function Header() {
       <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
         <a href="" className="logo d-flex align-items-center">
           {/* <img src="" alt="" /> */}
-          <h1>BBC</h1>
+          <h1>ANC</h1>
         </a>
         <Nav />
         <div className="position-relative">

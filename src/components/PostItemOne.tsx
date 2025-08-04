@@ -1,23 +1,26 @@
-import React from 'react'
-import './postItemOne.css';
-import Link from 'next/link';
-import { PostProps } from '@/sections/Posts';
+import React from "react";
+import "./postItemOne.css";
+import Link from "next/link";
+import { PostProps } from "@/sections/Posts";
 
-export default function PostItemOne({large, item}: {
+export default function PostItemOne({
+  large,
+  item,
+}: {
   large: boolean;
   item: PostProps;
 }) {
   return (
-    <div className={`post-entry-1 ${large ? 'lg' : undefined}`}>
+    <div className={`post-entry-1 ${large ? "lg" : undefined}`}>
       <Link href={`postitems/${item._id}`}>
         <img src={`/${item.img}`} alt="" className="img-fluid" />
       </Link>
       <div className="post-meta">
         <span className="date">{item.category}</span>
         <span className="mx-1">
-          <i className="bi bi-dot"></i>{' '}
-        </span>{' '}
-        <span>{new Date(item.date).toLocaleDateString('en-US')}</span>
+          <i className="bi bi-dot"></i>{" "}
+        </span>{" "}
+        <span>{new Date(item.date).toLocaleDateString("en-US")}</span>
       </div>
       <h2>
         <Link href={`postitems/${item._id}`}>{item.title}</Link>
@@ -36,6 +39,6 @@ export default function PostItemOne({large, item}: {
           </div>
         </>
       ) : null}
-   </div>
+    </div>
   );
 }

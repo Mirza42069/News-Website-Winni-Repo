@@ -3,13 +3,14 @@
 import { initialPost, PostProps } from "@/sections/Posts";
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import Image from "next/image";
 import Preloader from "@/components/Preloader";
 import SidePostItem from "@/components/SidePostItem";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Postitem({ params }: { params: { id: string } }) {
   const id: string = params.id;
-
+  const router = useRouter();
   const [item, setItem] = useState(initialPost);
   const [items, setItems] = useState([]);
 
@@ -47,6 +48,25 @@ export default function Postitem({ params }: { params: { id: string } }) {
     getSinglePostData();
     getItemData();
   }, []);
+
+  const handleDeletePost = async (id: string) => {
+    // Delete Post request
+    try {
+      const response = await fetch(`/api/postitems/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = response.status;
+      if (result === 200) {
+        console.log("Success", result);
+        router.push(`/postitems`);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <main id="main">
@@ -135,6 +155,20 @@ export default function Postitem({ params }: { params: { id: string } }) {
                     enim mattis volutpat id eget nisi. Duis libero tellus,
                     iaculis quis est eget, consectetur ultrices mauris.
                   </p>
+                  <div className="d-flex justify-content-center gap-4">
+                    <a
+                      className="btn btn-primary"
+                      onClick={() => handleDeletePost(id)}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </a>
+                    <Link
+                      href={`/createpostitem/${id}`}
+                      className="btn btn-primary"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </Link>
+                  </div>
                 </div>
               ) : (
                 <Preloader />

@@ -14,7 +14,7 @@ export const navs = [
   {
     id: 3,
     name: "Create Post",
-    link: "/createpostitems",
+    link: "/createpostitem",
     active: false,
   },
   {
@@ -32,11 +32,11 @@ export const navs = [
 ];
 
 export const scis = [
-  /* {
+  {
     id: 1,
     icon: 'bi-facebook',
     link: '',
-  },*/
+  },
   {
     id: 2,
     icon: "bi-twitter-x",

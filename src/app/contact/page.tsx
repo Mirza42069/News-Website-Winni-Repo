@@ -44,7 +44,7 @@ export default function Contact() {
                 <i className="bi bi-phone"></i>
                 <h3>Phone Number</h3>
                 <p>
-                  <a href="tel:+155895548855">081519415699</a>
+                  <a href="tel:+155895548855">08999999999</a>
                 </p>
               </div>
             </div>

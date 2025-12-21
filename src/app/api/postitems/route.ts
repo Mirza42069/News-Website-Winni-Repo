@@ -1,7 +1,5 @@
-import { headers } from "next/headers";
 import dbconnect from "../../../../config/db";
 import PostItem from "../../../../models/Postitem";
-import { request } from "http";
 
 dbconnect();
 

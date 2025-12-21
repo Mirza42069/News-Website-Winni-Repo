@@ -7,15 +7,15 @@ export default function BackToTopBtn() {
   const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
       setScroll(window.scrollY);
-    });
-    return () => {
-      window.removeEventListener('scroll', () => {
-        setScroll(window.scrollY);
-      });
     };
-  }, [scroll]);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const backToTop = () => {
     window.scrollTo(0, 0);
@@ -24,9 +24,8 @@ export default function BackToTopBtn() {
   return (
     <a
       onClick={backToTop}
-      className={`scroll-top d-flex align-items-center justify-content-center ${
-        scroll > 100 ? 'active' : undefined
-      }`}
+      className={`scroll-top d-flex align-items-center justify-content-center ${scroll > 100 ? 'active' : ''
+        }`}
     >
       <i className="bi bi-arrow-up-short"></i>
     </a>

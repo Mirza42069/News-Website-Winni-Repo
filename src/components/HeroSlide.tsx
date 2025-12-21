@@ -3,17 +3,17 @@ import React from 'react';
 export default function HeroSlide({
   slide,
 }: {
-  slide : {
+  slide: {
     bgImg: string;
     title: string;
-    brief: String;
+    brief: string;
   };
 }) {
   return (
-    <a 
-    href="#" 
-    className="img-bg d-flex allign-items-end"
-    style={{ backgroundImage: `url(/${slide.bgImg})` }}
+    <a
+      href="#"
+      className="img-bg d-flex align-items-end"
+      style={{ backgroundImage: `url(/${slide.bgImg})` }}
     >
       <div className="img-bg-inner">
         <h2>{slide.title}</h2>

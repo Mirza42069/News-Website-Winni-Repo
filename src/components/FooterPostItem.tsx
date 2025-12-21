@@ -21,7 +21,7 @@ export default function FooterPostItem({
         href={`/postitems/${item._id}`}
         className="d-flex align-items-center"
       >
-        <img src={`/${item.img}`} alt="" className="img-fluid me-3" />
+        {item.img && <img src={`/${item.img}`} alt="" className="img-fluid me-3" />}
         <div>
           <div className="post-meta d-block">
             <span className="date">{item.category}</span>

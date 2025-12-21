@@ -1,18 +1,19 @@
 "use client";
 
 import { initialPost, PostProps } from "@/sections/Posts";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import "./style.css";
 import Preloader from "@/components/Preloader";
 import SidePostItem from "@/components/SidePostItem";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Postitem({ params }: { params: { id: string } }) {
-  const id: string = params.id;
+export default function Postitem({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
   const [item, setItem] = useState(initialPost);
   const [items, setItems] = useState([]);
+  const ADMIN_PASSWORD = "54321";
 
   const tabsData = [
     { id: 1, name: "Popular", active: true },
@@ -50,6 +51,12 @@ export default function Postitem({ params }: { params: { id: string } }) {
   }, []);
 
   const handleDeletePost = async (id: string) => {
+    const enteredPassword = prompt("Enter admin password to delete this post:");
+    if (enteredPassword !== ADMIN_PASSWORD) {
+      alert("Incorrect password. Deletion cancelled.");
+      return;
+    }
+
     // Delete Post request
     try {
       const response = await fetch(`/api/postitems/${id}`, {
@@ -66,6 +73,15 @@ export default function Postitem({ params }: { params: { id: string } }) {
     } catch (error) {
       console.log("Error", error);
     }
+  };
+
+  const handleEditClick = () => {
+    const enteredPassword = prompt("Enter admin password to edit this post:");
+    if (enteredPassword !== ADMIN_PASSWORD) {
+      alert("Incorrect password. Edit cancelled.");
+      return;
+    }
+    router.push(`/createpostitem/${id}`);
   };
 
   return (
@@ -103,15 +119,9 @@ export default function Postitem({ params }: { params: { id: string } }) {
                     dignissimos
                   </p>
                   <figure className="my-4">
-                    {/* <Image
-                      src={`/${item.img}`}
-                      alt=""
-                      className="img-fluid"
-                      width={100}
-                      height={100}
-                      layout="responsive"
-                    /> */}
-                    {<img src={`/${item.img}`} alt="" className="img-fluid" />}
+                    {item.img && (
+                      <img src={`/${item.img}`} alt="" className="img-fluid" />
+                    )}
                     <figcaption>
                       Lorem ipsum dolor sit amet consectetur adipisicing elit.
                       Mollitia tenetur aut voluptatem cupiditate cum animi et.
@@ -162,12 +172,13 @@ export default function Postitem({ params }: { params: { id: string } }) {
                     >
                       <i className="bi bi-trash"></i>
                     </a>
-                    <Link
-                      href={`/createpostitem/${id}`}
+                    <a
                       className="btn btn-primary"
+                      onClick={handleEditClick}
+                      style={{ cursor: 'pointer' }}
                     >
                       <i className="bi bi-pencil"></i>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               ) : (
@@ -180,9 +191,8 @@ export default function Postitem({ params }: { params: { id: string } }) {
                   {tabs.map((tab) => (
                     <li className="nav-item" key={tab.id}>
                       <button
-                        className={`nav-link ${
-                          tab.active ? "active" : undefined
-                        }`}
+                        className={`nav-link ${tab.active ? "active" : undefined
+                          }`}
                         onClick={() => handleTabActive(tab.id)}
                       >
                         {tab.name}
@@ -192,18 +202,16 @@ export default function Postitem({ params }: { params: { id: string } }) {
                 </ul>
                 <div className="tab-content">
                   <div
-                    className={`tab-pane fade ${
-                      tabs[0].active ? "show active" : ""
-                    }`}
+                    className={`tab-pane fade ${tabs[0].active ? "show active" : ""
+                      }`}
                   >
                     {items.slice(0, 6).map((item: PostProps) => (
                       <SidePostItem key={item._id} item={item} />
                     ))}
                   </div>
                   <div
-                    className={`tab-pane fade ${
-                      tabs[1].active ? "show active" : ""
-                    }`}
+                    className={`tab-pane fade ${tabs[1].active ? "show active" : ""
+                      }`}
                   >
                     {items.slice(6, 12).map((item: PostProps) => (
                       <SidePostItem key={item._id} item={item} />

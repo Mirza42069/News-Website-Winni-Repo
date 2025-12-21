@@ -11,9 +11,9 @@ export default function PostItemOne({
   item: PostProps;
 }) {
   return (
-    <div className={`post-entry-1 ${large ? "lg" : undefined}`}>
+    <div className={`post-entry-1 ${large ? "lg" : ""}`}>
       <Link href={`postitems/${item._id}`}>
-        <img src={`/${item.img}`} alt="" className="img-fluid" />
+        {item.img && <img src={`/${item.img}`} alt="" className="img-fluid" />}
       </Link>
       <div className="post-meta">
         <span className="date">{item.category}</span>
@@ -31,7 +31,7 @@ export default function PostItemOne({
 
           <div className="d-flex align-items-center author">
             <div className="photo">
-              <img src={item.avatar} alt="" className="img-fluid" />
+              {item.avatar && <img src={item.avatar} alt="" className="img-fluid" />}
             </div>
             <div className="name">
               <h3 className="m-0 p-0">{item.author}</h3>

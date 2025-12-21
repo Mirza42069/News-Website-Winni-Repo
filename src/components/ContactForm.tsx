@@ -34,7 +34,7 @@ export default function ContactForm() {
 
     // POST request sent
     try {
-      const response = await fetch(`${process.env.HOST}api/contact`, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

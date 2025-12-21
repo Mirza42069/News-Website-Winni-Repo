@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 
 // import AOS
 import AOS from "aos";
 
-export default function EditPostItem({ params }: { params: { id: string } }) {
-  const id = params.id;
+export default function EditPostItem({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
 
   const [text, setText] = useState<any | {}>({});
+  const [password, setPassword] = useState("");
+  const ADMIN_PASSWORD = "54321";
   const getSinglePostData = () => {
     fetch(`/api/postitems/${id}`)
       .then((res) => {
@@ -42,6 +44,12 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
       text.brief === ""
     ) {
       setText({ ...text, validate: "incomplete" });
+      return;
+    }
+
+    // password validation
+    if (password !== ADMIN_PASSWORD) {
+      setText({ ...text, validate: "wrongpassword" });
       return;
     }
 
@@ -97,7 +105,7 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                         <input
                           type="text"
                           name="title"
-                          value={text.title}
+                          value={text.title || ''}
                           onChange={handleTextChange}
                           className="form-control"
                           placeholder="Enter Title"
@@ -108,7 +116,7 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                         <input
                           type="text"
                           name="img"
-                          value={text.img}
+                          value={text.img || ''}
                           onChange={handleTextChange}
                           className="form-control"
                           placeholder="Enter Image URL"
@@ -119,7 +127,7 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                         <input
                           type="text"
                           name="category"
-                          value={text.category}
+                          value={text.category || ''}
                           onChange={handleTextChange}
                           className="form-control"
                           placeholder="Enter Post Category"
@@ -130,10 +138,20 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                         <input
                           type="text"
                           name="author"
-                          value={text.author}
+                          value={text.author || ''}
                           onChange={handleTextChange}
                           className="form-control"
                           placeholder="Enter Author Name"
+                        />
+                      </div>
+                      <div className="col-lg-6 mb-3">
+                        <label>Admin Password</label>
+                        <input
+                          type="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="form-control"
+                          placeholder="Enter Admin Password"
                         />
                       </div>
                       <div className="col-12 mb-3">
@@ -141,7 +159,7 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                         <textarea
                           className="form-control"
                           name="brief"
-                          value={text.brief}
+                          value={text.brief || ''}
                           onChange={handleTextChange}
                           placeholder="Enter Post Brief"
                           cols={30}
@@ -150,16 +168,21 @@ export default function EditPostItem({ params }: { params: { id: string } }) {
                       </div>
                       <div className="mb-3">
                         {text.validate === "loading" && (
-                          <div className="loading">Sending Post</div>
+                          <div className="loading">Updating Post</div>
                         )}
                         {text.validate === "incomplete" && (
                           <div className="error-message">
                             Please fill in all above details.
                           </div>
                         )}
+                        {text.validate === "wrongpassword" && (
+                          <div className="error-message">
+                            Incorrect admin password.
+                          </div>
+                        )}
                         {text.validate === "success" && (
                           <div className="sent-message">
-                            Your news was posted successfull. Thank you!
+                            Your post was updated successfully!
                           </div>
                         )}
                         {text.validate === "error" && (

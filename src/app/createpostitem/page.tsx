@@ -20,10 +20,12 @@ export default function CreatePostItem() {
     category: "",
     author: "",
     brief: "",
+    password: "",
     validate: "",
   };
 
   const [text, setText] = useState(intialState);
+  const ADMIN_PASSWORD = "54321";
 
   const handleTextChange = (e: Event | any) => {
     const { name, value } = e.target;
@@ -43,6 +45,12 @@ export default function CreatePostItem() {
       return;
     }
 
+    // password validation
+    if (text.password !== ADMIN_PASSWORD) {
+      setText({ ...text, validate: "wrongpassword" });
+      return;
+    }
+
     // POST request sent
     try {
       const response = await fetch("/api/postitems", {
@@ -50,7 +58,13 @@ export default function CreatePostItem() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(text),
+        body: JSON.stringify({
+          title: text.title,
+          img: text.img,
+          category: text.category,
+          author: text.author,
+          brief: text.brief,
+        }),
       });
 
       setText({ ...text, validate: "loading" });
@@ -125,6 +139,17 @@ export default function CreatePostItem() {
                           placeholder="Enter Author Name"
                         />
                       </div>
+                      <div className="col-lg-6 mb-3">
+                        <label>Admin Password</label>
+                        <input
+                          type="password"
+                          name="password"
+                          value={text.password}
+                          onChange={handleTextChange}
+                          className="form-control"
+                          placeholder="Enter Admin Password"
+                        />
+                      </div>
                       <div className="col-12 mb-3">
                         <label>Brief</label>
                         <textarea
@@ -146,9 +171,14 @@ export default function CreatePostItem() {
                             Please fill in all above details.
                           </div>
                         )}
+                        {text.validate === "wrongpassword" && (
+                          <div className="error-message">
+                            Incorrect admin password.
+                          </div>
+                        )}
                         {text.validate === "success" && (
                           <div className="sent-message">
-                            Your news was posted successfull. Thank you!
+                            Your news was posted successfully. Thank you!
                           </div>
                         )}
                         {text.validate === "error" && (

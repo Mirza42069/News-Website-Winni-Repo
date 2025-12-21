@@ -5,10 +5,11 @@ dbconnect();
 
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const postItem = await PostItem.findById(params.id).select("-__v");
+    const postItem = await PostItem.findById(id).select("-__v");
     return Response.json(postItem);
   } catch (error) {
     return new Response(
@@ -20,11 +21,12 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const updatedItem = await request.json();
   try {
-    const postItem = await PostItem.findByIdAndUpdate(params.id, {
+    const postItem = await PostItem.findByIdAndUpdate(id, {
       ...updatedItem,
     });
     if (!postItem)
@@ -49,11 +51,12 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const postItem = await PostItem.findByIdAndDelete(params.id);
+    const postItem = await PostItem.findByIdAndDelete(id);
     if (!postItem)
       return new Response(
         JSON.stringify({ message: "No Item Found for this ID" }),

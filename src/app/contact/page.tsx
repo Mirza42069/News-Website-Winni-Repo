@@ -54,7 +54,7 @@ export default function Contact() {
                 <i className="bi bi-envelope"></i>
                 <h3>Email</h3>
                 <p>
-                  <a href="mailto:info@example.com">Mirzafarisy@gmail.com</a>
+                  <a href="mailto:contact@ancnews.com">contact@ancnews.com</a>
                 </p>
               </div>
             </div>

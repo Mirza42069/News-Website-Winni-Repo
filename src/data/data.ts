@@ -35,17 +35,17 @@ export const scis = [
   {
     id: 1,
     icon: 'bi-facebook',
-    link: '',
+    link: 'https://www.facebook.com/elonmusk',
   },
   {
     id: 2,
     icon: "bi-twitter-x",
-    link: "",
+    link: "https://x.com/elonmusk",
   },
   {
     id: 3,
     icon: "bi-instagram",
-    link: "",
+    link: "https://www.instagram.com/elonmusk",
   },
 ];
 

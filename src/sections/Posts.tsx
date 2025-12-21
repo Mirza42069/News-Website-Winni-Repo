@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './posts.css';
 import PostItemOne from '@/components/PostItemOne';
@@ -15,7 +15,7 @@ export interface PostProps {
   title: string;
   brief: string;
   avatar: string;
-  author: string; 
+  author: string;
 }
 
 export const initialPost = {
@@ -43,10 +43,10 @@ export default function Post() {
       .catch(e => console.log(e.message));
   }
 
-  const getSinglePostData=(id: string)=>{
+  const getSinglePostData = (id: string) => {
     fetch(`/api/postitems/${id}`)
-      .then(res=>{
-        if(res.status === 404){
+      .then(res => {
+        if (res.status === 404) {
           router.push('/not-found');
         }
         return res.json();
@@ -54,7 +54,7 @@ export default function Post() {
       .then(data => setItem(data))
       .catch(e => console.log(e.message));
   };
-  
+
   useEffect(() => {
     getItemData();
     getSinglePostData('6846e5572d56e37859efefc6');
@@ -70,47 +70,47 @@ export default function Post() {
           <div className="col-lg-8">
             <div className="row g-5">
               <div className="col-lg-4 border-start custom-border">
-                {items && 
+                {items &&
                   items.length > 0 ? items
-                    .filter((item: {trending: boolean; top: boolean})=> 
+                    .filter((item: { trending: boolean; top: boolean }) =>
                       !item.trending && !item.top
                     )
                     .slice(0, 3)
                     .map((item: PostProps) => (
                       <PostItemOne key={item._id} large={false} item={item} />
                     )
-                  ): <Preloader />
-                  }
+                    ) : <Preloader />
+                }
               </div>
               <div className="col-lg-4 border-start custom-border">
-                {items && 
+                {items &&
                   items.length > 0 ? items
-                    .filter((item: {trending: boolean; top: boolean})=> 
+                    .filter((item: { trending: boolean; top: boolean }) =>
                       !item.trending && !item.top
                     )
                     .slice(3, 6)
                     .map((item: PostProps) => (
                       <PostItemOne key={item._id} large={false} item={item} />
                     )
-                  ) : <Preloader /> 
-                  }
+                    ) : <Preloader />
+                }
               </div>
               <div className="col-lg-4">
                 <div className="trending">
                   <h3>Trending</h3>
                   <ul className="trending-post">
-                    {items && 
+                    {items &&
                       items.length > 0 ? items
-                        .filter((item: {trending: boolean})=> item.trending)
+                        .filter((item: { trending: boolean }) => item.trending)
                         .map((item: PostProps, index: number) => (
-                          <TrendingPost 
-                            key={item._id} 
-                            index={index} 
+                          <TrendingPost
+                            key={item._id}
+                            index={index}
                             item={item}
                           />
                         )
-                      ) : <Preloader />
-                      }
+                        ) : <Preloader />
+                    }
                   </ul>
                 </div>
               </div>

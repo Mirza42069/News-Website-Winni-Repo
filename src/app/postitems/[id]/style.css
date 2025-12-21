@@ -12,9 +12,18 @@
   }
 }
 
+.post-content .post-brief {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  /* Prevents float from affecting elements below */
+}
+
 .post-content .firstcharacter {
   float: left;
-  font-family: Georgia;
+  font-family: Georgia, serif;
   font-size: 75px;
   line-height: 60px;
   padding-top: 4px;

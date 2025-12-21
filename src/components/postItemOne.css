@@ -5,8 +5,10 @@
   margin-bottom: 30px;
 }
 
-.post-entry-1 img {
+.post-entry-1 img,
+.post-entry-1 .ratio {
   margin-bottom: 30px;
+  max-height: 400px;
 }
 
 .post-entry-1 h2 {

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 
 import { initialPost, PostProps } from "@/sections/Posts";
 import React, { useState, useEffect, use } from "react";
@@ -102,69 +103,26 @@ export default function Postitem({ params }: { params: Promise<{ id: string }> }
                     </span>
                   </div>
                   <h1 className="mb-5">{item.title}</h1>
-                  <p>
-                    <span className="firstcharacter">
-                      {item.brief && item.brief.charAt(0)}
-                    </span>
-                    {item.brief && item.brief.substring(1)}
-                  </p>
 
-                  <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Vero temporibus repudiandae, inventore pariatur numquam
-                    cumque possimus exercitationem? Nihil tempore odit ab minus
-                    eveniet praesentium, similique blanditiis molestiae ut saepe
-                    perspiciatis officia nemo, eos quae cumque. Accusamus fugiat
-                    architecto rerum animi atque eveniet, quo, praesentium
-                    dignissimos
-                  </p>
-                  <figure className="my-4">
-                    {item.img && (
-                      <img src={`/${item.img}`} alt="" className="img-fluid" />
-                    )}
-                    <figcaption>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Mollitia tenetur aut voluptatem cupiditate cum animi et.
-                    </figcaption>
-                  </figure>
-                  <p>
-                    Vestibulum neque ante, hendrerit vitae interdum nec, mattis
-                    ac ante. Donec a dui mauris. Ut aliquet neque ligula, a
-                    elementum lacus dignissim nec. Donec molestie, enim eu
-                    suscipit aliquam, arcu lectus condimentum est, quis eleifend
-                    nulla orci at erat. Nulla volutpat justo dolor, vitae
-                    imperdiet purus lacinia vel. Nunc suscipit ligula et nunc
-                    tempor efficitur. Proin ut lectus dapibus, posuere metus
-                    congue, egestas ex. Ut tempor justo nibh, ac porttitor magna
-                    placerat consequat. Donec sapien orci, tristique ullamcorper
-                    congue eu, imperdiet eu metus. Aliquam lorem ex, vehicula
-                    eget leo eu, imperdiet suscipit nunc.
-                  </p>
-                  <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. At
-                    quaerat cum sint enim accusantium molestiae? Omnis molestias
-                    beatae at quis, dignissimos ad, dicta saepe veniam fuga
-                    animi, laborum optio voluptates.
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Duis in nulla nec arcu molestie consectetur elementum
-                    molestie justo. Nullam vitae nulla ac tortor rhoncus feugiat
-                    eu non dui. Duis molestie quam urna, ut ornare nunc
-                    sollicitudin in. Mauris sed rutrum metus, id pellentesque
-                    velit. Aenean ut neque elit. Vivamus id mattis dolor. Nulla
-                    dignissim aliquam velit, ut lobortis mi imperdiet et. Morbi
-                    ut elit ullamcorper, accumsan metus ut, imperdiet mi.
-                    Pellentesque nec ullamcorper lorem. Nunc tempor quam non leo
-                    consequat, sit amet viverra nibh hendrerit. Pellentesque nec
-                    elit vitae lorem egestas maximus vel vitae nunc. Mauris nec
-                    rhoncus magna. Quisque tempor massa ut dolor semper, ut
-                    scelerisque lacus viverra. Morbi aliquam nibh scelerisque
-                    pretium sollicitudin. Nulla lacinia tortor sed dolor
-                    interdum, eget pretium purus pellentesque. Nulla at nulla id
-                    enim mattis volutpat id eget nisi. Duis libero tellus,
-                    iaculis quis est eget, consectetur ultrices mauris.
-                  </p>
+                  {item.brief && (
+                    <p className="post-brief">
+                      <span className="firstcharacter">
+                        {item.brief.charAt(0)}
+                      </span>
+                      {item.brief.substring(1)}
+                    </p>
+                  )}
+
+                  {item.img && (
+                    <figure className="my-4">
+                      <img
+                        src={item.img.startsWith('http') ? item.img : `/${item.img}`}
+                        alt={item.title}
+                        className="img-fluid"
+                      />
+                    </figure>
+                  )}
+
                   <div className="d-flex justify-content-center gap-4">
                     <a
                       className="btn btn-primary"

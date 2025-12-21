@@ -60,8 +60,8 @@
   font-size: 15px;
 }
 
-.contact .contact-form input::focus,
-.contact .contact-form textarea::focus {
+.contact .contact-form input:focus,
+.contact .contact-form textarea:focus {
   background-color: var(--color-primary);
 }
 

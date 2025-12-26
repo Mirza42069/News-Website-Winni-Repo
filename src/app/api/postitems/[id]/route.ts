@@ -25,9 +25,27 @@ export async function PUT(
 ) {
   const { id } = await params;
   const updatedItem = await request.json();
+
+  // Server-side password validation
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    return new Response(JSON.stringify({ message: "Server configuration error" }), {
+      status: 500,
+    });
+  }
+
+  if (!updatedItem.password || updatedItem.password !== adminPassword) {
+    return new Response(JSON.stringify({ message: "Unauthorized: Invalid admin password" }), {
+      status: 401,
+    });
+  }
+
+  // Remove password from data before updating
+  const { password, ...updateData } = updatedItem;
+
   try {
     const postItem = await PostItem.findByIdAndUpdate(id, {
-      ...updatedItem,
+      ...updateData,
     });
     if (!postItem)
       return new Response(
@@ -51,10 +69,34 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+
+  // Server-side password validation
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    return new Response(JSON.stringify({ message: "Server configuration error" }), {
+      status: 500,
+    });
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ message: "Unauthorized: Password required" }), {
+      status: 401,
+    });
+  }
+
+  if (!body.password || body.password !== adminPassword) {
+    return new Response(JSON.stringify({ message: "Unauthorized: Invalid admin password" }), {
+      status: 401,
+    });
+  }
+
   try {
     const postItem = await PostItem.findByIdAndDelete(id);
     if (!postItem)

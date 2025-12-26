@@ -56,13 +56,11 @@ export default function Footer() {
             <div className="col-6 col-lg-2">
               <h3 className="footer-heading">Navigation</h3>
               <ul className="footer-links list-unstyled">
-                {navs.map((nav, index) => (
-                  <li key={index}>
-                    <a href="#">
-                      <i className="bi bi-chevron-right"></i> {nav}
-                    </a>
-                  </li>
-                ))}
+                <li><Link href="/"><i className="bi bi-chevron-right"></i> Home</Link></li>
+                <li><Link href="/postitems"><i className="bi bi-chevron-right"></i> Posts</Link></li>
+                <li><Link href="/createpostitem"><i className="bi bi-chevron-right"></i> Create Post</Link></li>
+                <li><Link href="/about"><i className="bi bi-chevron-right"></i> About</Link></li>
+                <li><Link href="/contact"><i className="bi bi-chevron-right"></i> Contact</Link></li>
               </ul>
             </div>
             <div className="col-6 col-lg-2">

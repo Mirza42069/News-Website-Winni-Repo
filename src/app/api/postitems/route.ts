@@ -11,8 +11,25 @@ export async function GET() {
 export async function POST(request: Request) {
   const postItem = await request.json();
 
+  // Server-side password validation
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    return new Response(JSON.stringify({ message: "Server configuration error" }), {
+      status: 500,
+    });
+  }
+  
+  if (!postItem.password || postItem.password !== adminPassword) {
+    return new Response(JSON.stringify({ message: "Unauthorized: Invalid admin password" }), {
+      status: 401,
+    });
+  }
+
+  // Remove password from data before saving
+  const { password, ...postData } = postItem;
+
   try {
-    const savedItem = await new PostItem({ ...postItem }).save();
+    const savedItem = await new PostItem({ ...postData }).save();
     return new Response(JSON.stringify(savedItem), {
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +37,7 @@ export async function POST(request: Request) {
       status: 201,
     });
   } catch (error) {
-    return new Response(JSON.stringify({ message: "SRVER ERROR" }), {
+    return new Response(JSON.stringify({ message: "SERVER ERROR" }), {
       status: 500,
     });
   }

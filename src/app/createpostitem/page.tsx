@@ -25,7 +25,6 @@ export default function CreatePostItem() {
   };
 
   const [text, setText] = useState(intialState);
-  const ADMIN_PASSWORD = "54321";
 
   const handleTextChange = (e: Event | any) => {
     const { name, value } = e.target;
@@ -39,19 +38,16 @@ export default function CreatePostItem() {
       text.title === "" ||
       text.img === "" ||
       text.category === "" ||
-      text.brief === ""
+      text.brief === "" ||
+      text.password === ""
     ) {
       setText({ ...text, validate: "incomplete" });
       return;
     }
 
-    // password validation
-    if (text.password !== ADMIN_PASSWORD) {
-      setText({ ...text, validate: "wrongpassword" });
-      return;
-    }
+    setText({ ...text, validate: "loading" });
 
-    // POST request sent
+    // POST request sent - server validates password
     try {
       const response = await fetch("/api/postitems", {
         method: "POST",
@@ -64,15 +60,17 @@ export default function CreatePostItem() {
           category: text.category,
           author: text.author,
           brief: text.brief,
+          password: text.password,
         }),
       });
 
-      setText({ ...text, validate: "loading" });
-
-      const result = response.status;
-      if (result === 201) {
+      if (response.status === 201) {
         setText({ ...text, validate: "success" });
-        console.log("Success:", result);
+        console.log("Success:", response.status);
+      } else if (response.status === 401) {
+        setText({ ...text, validate: "wrongpassword" });
+      } else {
+        setText({ ...text, validate: "error" });
       }
     } catch (error) {
       setText({ ...text, validate: "error" });

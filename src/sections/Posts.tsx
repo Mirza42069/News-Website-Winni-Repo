@@ -16,6 +16,8 @@ export interface PostProps {
   brief: string;
   avatar: string;
   author: string;
+  trending?: boolean;
+  top?: boolean;
 }
 
 export const initialPost = {
@@ -31,33 +33,25 @@ export const initialPost = {
 
 export default function Post() {
   const router = useRouter();
-  const [items, setItems] = useState([]);
-  const [item, setItem] = useState(initialPost);
-
-  //6846e5572d56e37859efefc6
+  const [items, setItems] = useState<PostProps[]>([]);
+  const [item, setItem] = useState<PostProps>(initialPost);
 
   function getItemData() {
     fetch(`/api/postitems`)
       .then(res => res.json())
-      .then(data => setItems(data))
+      .then(data => {
+        setItems(data);
+        // Dynamically select featured post (first "top" post, or first post if none)
+        if (data && data.length > 0) {
+          const topPost = data.find((p: { top: boolean }) => p.top) || data[0];
+          setItem(topPost);
+        }
+      })
       .catch(e => console.log(e.message));
   }
 
-  const getSinglePostData = (id: string) => {
-    fetch(`/api/postitems/${id}`)
-      .then(res => {
-        if (res.status === 404) {
-          router.push('/not-found');
-        }
-        return res.json();
-      })
-      .then(data => setItem(data))
-      .catch(e => console.log(e.message));
-  };
-
   useEffect(() => {
     getItemData();
-    getSinglePostData('6846e5572d56e37859efefc6');
   }, []);
 
   return (
@@ -72,7 +66,7 @@ export default function Post() {
               <div className="col-lg-4 border-start custom-border">
                 {items &&
                   items.length > 0 ? items
-                    .filter((item: { trending: boolean; top: boolean }) =>
+                    .filter((item: PostProps) =>
                       !item.trending && !item.top
                     )
                     .slice(0, 3)
@@ -85,7 +79,7 @@ export default function Post() {
               <div className="col-lg-4 border-start custom-border">
                 {items &&
                   items.length > 0 ? items
-                    .filter((item: { trending: boolean; top: boolean }) =>
+                    .filter((item: PostProps) =>
                       !item.trending && !item.top
                     )
                     .slice(3, 6)
@@ -101,7 +95,7 @@ export default function Post() {
                   <ul className="trending-post">
                     {items &&
                       items.length > 0 ? items
-                        .filter((item: { trending: boolean }) => item.trending)
+                        .filter((item: PostProps) => item.trending)
                         .map((item: PostProps, index: number) => (
                           <TrendingPost
                             key={item._id}
